@@ -25,3 +25,15 @@ class MovieSerializer(serializers.Serializer):
             movie.genre.add(genre_choice)
             
         return movie
+    
+    def update(self, instance:Movie, validated_data:dict):
+        
+        instance.title = validated_data.get("title", instance.title)
+        instance.premiere = validated_data.get("premiere", instance.premiere)
+        instance.duration = validated_data.get("duration", instance.duration)
+        instance.classification = validated_data.get("classification", instance.classification)
+        instance.synopsis = validated_data.get("synopsis", instance.synopsis)
+        
+        instance.save()
+        
+        return instance
