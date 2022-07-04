@@ -33,7 +33,7 @@ class ReviewDetailsView(APIView, PageNumberPagination):
         reviews = movie.reviews.all()
         result_page = self.paginate_queryset(reviews, request, view=self)
         serializer = ReviewSerializer(result_page, many=True)
-        return self.get_paginated_response(serializer.data, status=status.HTTP_200_OK)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request, movie_id):
 
@@ -46,7 +46,7 @@ class ReviewDetailsView(APIView, PageNumberPagination):
 
         serializer = ReviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(movie=movie, critic=request.user)
+        serializer.save(movie=movie, critics=request.user)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from users.models import User
-from movies.serializers import MovieSerializer
-from users.serializers import RegisterSerializer
 
 from .models import Review
+
 
 class CriticSerializer(serializers.ModelSerializer):
     class Meta:

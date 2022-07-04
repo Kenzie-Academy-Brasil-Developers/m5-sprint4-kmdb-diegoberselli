@@ -1,5 +1,5 @@
 from rest_framework import serializers
-import ipdb
+
 from .models import User
 
 
@@ -21,8 +21,9 @@ class RegisterSerializer(serializers.Serializer):
     def create(self, validated_data):
 
         validated = User.objects.create_superuser(**validated_data)
-        
+
         return validated
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
