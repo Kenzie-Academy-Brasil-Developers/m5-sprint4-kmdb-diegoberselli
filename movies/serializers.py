@@ -19,21 +19,24 @@ class MovieSerializer(serializers.Serializer):
 
         genre_data = validated_data.pop("genre")
         movie = Movie.objects.create(**validated_data)
-        
+
         for gen in genre_data:
             genre_choice, _ = Genre.objects.get_or_create(**gen)
             movie.genre.add(genre_choice)
-            
+
         return movie
-    
-    def update(self, instance:Movie, validated_data:dict):
-        
-        instance.title = validated_data.get("title", instance.title)
-        instance.premiere = validated_data.get("premiere", instance.premiere)
-        instance.duration = validated_data.get("duration", instance.duration)
-        instance.classification = validated_data.get("classification", instance.classification)
-        instance.synopsis = validated_data.get("synopsis", instance.synopsis)
-        
+
+    def update(self, instance: Movie, validated_data: dict):
+
+        genre_data = validated_data.pop("genre" or None)
+        if genre_data:
+            instance.genre.clear()
+            for gen in genre_data:
+                verify, _ = Genre.objects.get_or_create(**gen)
+                instance.genre.add(verify)
+
+        for key, value in validated_data.items():
+            setattr(instance, key, value)
+
         instance.save()
-        
         return instance
