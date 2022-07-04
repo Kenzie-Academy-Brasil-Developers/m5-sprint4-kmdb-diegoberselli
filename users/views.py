@@ -1,26 +1,26 @@
-import ipdb
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.pagination import PageNumberPagination
 
 from users.models import User
 from users.permissions import UserIsAdmin
 from users.serializers import LoginSerializer, RegisterSerializer
 
 
-class RegisterView(APIView):
+class RegisterView(APIView, PageNumberPagination):
     authentication_classes = [TokenAuthentication]
     permission_classes = [UserIsAdmin]
 
     def get(self, request):
 
         user = User.objects.all()
-        serializer = RegisterSerializer(user, many=True)
-        return Response(serializer.data)
+        result_page = self.paginate_queryset(user, request, view=self)
+        serializer = RegisterSerializer(result_page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
 

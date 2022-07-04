@@ -1,17 +1,15 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from users import serializers
 
 from movies.models import Movie
 from movies.permissions import MovieIsAdmin
 from movies.serializers import MovieSerializer
 
 
-class MovieView(APIView):
+class MovieView(APIView, PageNumberPagination):
 
     authentication_classes = [TokenAuthentication]
     permission_classes = [MovieIsAdmin]
@@ -19,8 +17,9 @@ class MovieView(APIView):
     def get(self, request):
 
         movie = Movie.objects.all()
-        serializer = MovieSerializer(movie, many=True)
-        return Response(serializer.data)
+        result_page = self.paginate_queryset(movie, request, view=self)
+        serializer = MovieSerializer(result_page, many=True)
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request):
 
