@@ -46,7 +46,7 @@ class ReviewDetailsView(APIView, PageNumberPagination):
 
         serializer = ReviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        serializer.save(movie=movie, critics=request.user)
+        serializer.save(movie=movie, critic=request.user)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

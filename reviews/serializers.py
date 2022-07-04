@@ -15,7 +15,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Review
-        fields = ['id', 'stars', 'review', 'spoilers', 'recommendation','critic' , 'movie_id']
+        fields = ['id', 'stars', 'review', 'spoilers', 'recommendation','critic', 'movie_id']
         read_only_fields = ['id', 'movie_id', 'critic']
         extra_kwargs = {'stars': {'max_value':10, 'min_value':1}}
 
