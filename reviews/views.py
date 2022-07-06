@@ -1,3 +1,4 @@
+import ipdb
 from movies.models import Movie
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
@@ -5,9 +6,9 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
-import ipdb
 
 from reviews.models import Review
+from reviews.permissions import IsAdminOrIsOwnUser
 from reviews.serializers import ReviewSerializer
 
 
@@ -54,7 +55,7 @@ class ReviewDetailsView(APIView, PageNumberPagination):
 
 class DeteleReviewView(APIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrIsOwnUser]
 
     def delete(self, request, review_id):
         try:

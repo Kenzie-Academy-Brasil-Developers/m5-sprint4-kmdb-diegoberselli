@@ -20,7 +20,7 @@ class RegisterSerializer(serializers.Serializer):
 
     def create(self, validated_data):
 
-        validated = User.objects.create_superuser(**validated_data)
+        validated = User.objects.create_user(**validated_data)
 
         return validated
 

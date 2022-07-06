@@ -28,7 +28,7 @@ class MovieSerializer(serializers.Serializer):
 
     def update(self, instance: Movie, validated_data: dict):
 
-        genre_data = validated_data.pop("genre" or None)
+        genre_data = validated_data.pop("genre", None)
         if genre_data:
             instance.genre.clear()
             for gen in genre_data:

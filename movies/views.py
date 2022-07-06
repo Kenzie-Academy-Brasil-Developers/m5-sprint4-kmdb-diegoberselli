@@ -41,13 +41,11 @@ class MovieViewDetail(APIView):
         try:
             movie = Movie.objects.get(id=movie_id)
         except Movie.DoesNotExist:
-            return Response({"message": "Movie not found"}, status=status.HTTP_200_OK)
+            return Response({"message": "Movie not found"}, status=status.HTTP_404_NOT_FOUND)
         serializer = MovieSerializer(movie)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, movie_id):
-        # movie = get_object_or_404(Movie, id=movie_id)
-        # ou
         try:
             movie = Movie.objects.get(id=movie_id)
         except Movie.DoesNotExist:
